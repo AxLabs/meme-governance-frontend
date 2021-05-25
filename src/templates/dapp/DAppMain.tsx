@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-import { Section } from '../../layout/Section';
+import { MemeContract, MemeContractState } from '../../contracts/MemeContract';
+import {
+  MemeGovernanceContract,
+  MemeGovernanceContractState,
+} from '../../contracts/MemeGovernanceContract';
 import { NeoLineN3Init, NeoLineN3Interface } from '../../utils/neoline/neoline';
 import InstallationInstructions from './InstallationInstructions';
-import SplashScreen from './SplashScreen';
-import { MemeContract, MemeContractState } from '../../contracts/MemeContract';
-import { MemeGovernanceContract, MemeGovernanceContractState } from '../../contracts/MemeGovernanceContract';
-import { Proposals } from './Proposals';
 import { Memes } from './Memes';
+import { Proposals } from './Proposals';
+import SplashScreen from './SplashScreen';
 
 const SPLASH_SCREEN_DURATION_MS = 3000;
 
@@ -15,11 +17,15 @@ const DAppMain = () => {
   const [neoLine, setNeoLine] = useState<NeoLineN3Interface | null>(null);
   const [showSplashScreen, setShowSplashScreen] = useState(true);
   const [govContractState, setGovContractState] = useState<MemeGovernanceContractState>({
-    proposals: []
+    proposals: [],
   });
   const [memeContractState, setMemeContractState] = useState<MemeContractState>({
-    memes: []
+    memes: [],
   });
+
+  // TODO remove this
+  console.log(govContractState);
+  console.log(memeContractState);
 
   useEffect(() => {
     if (!(window as any).NEOLineN3) {

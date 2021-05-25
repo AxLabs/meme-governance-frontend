@@ -125,4 +125,4 @@ See [LICENSE](LICENSE) for more information.
 
 ---
 
-Made with ♥ by [AxLabs](https://axlabs.com)
+Made with :heart: by [AxLabs](https://axlabs.com)

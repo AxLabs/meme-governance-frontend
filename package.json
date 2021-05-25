@@ -1,7 +1,7 @@
 {
   "name": "meme-governance-frontend",
   "version": "1.0.0",
-  "homepage": "https://meme-governance.axlabs.com",
+  "homepage": "https://axlabs.github.io/meme-governance-frontend/",
   "scripts": {
     "dev": "next --port 8080",
     "build": "next build",

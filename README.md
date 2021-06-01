@@ -44,7 +44,7 @@ cd my-project-name
 npm install
 ```
 
-Then, you can run locally in development mode with live reload:
+Then, you can run **locally** in **development mode with live reload**:
 
 ```
 npm run dev

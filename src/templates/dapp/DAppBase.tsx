@@ -20,14 +20,7 @@ const DAppBase = () => (
         <NavbarTwoColumns logo={<Logo xl />}>
           <li>
             <Link href="https://github.com/AxLabs/meme-governance-frontend">
-              <a>FAQ</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/">
-              <a>
-                <Button>Connect Wallet!</Button>
-              </a>
+              <Button>FAQ</Button>
             </Link>
           </li>
         </NavbarTwoColumns>

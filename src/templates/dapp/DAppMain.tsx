@@ -60,12 +60,17 @@ const DAppMain = () => {
   if (neoLine) {
     return (
       <>
-        <Memes />
-        <Proposals />
+        <div className="mx-5">
+          <span className="text-base md:text-xl font-bold">Memes:</span>
+          <Memes memeContractState={memeContractState} />
+        </div>
+        <div className="mx-5">
+          <span className="text-base md:text-xl font-bold">Proposals:</span>
+          <Proposals govContractState={govContractState} memeContractState={memeContractState} />
+        </div>
       </>
     );
-  }
-  if (showSplashScreen) {
+  } else if (showSplashScreen) {
     return <SplashScreen />;
   }
   return <InstallationInstructions />;

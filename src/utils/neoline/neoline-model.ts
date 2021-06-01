@@ -1,6 +1,6 @@
-type NeoType = 'Address' | 'Boolean' | 'Integer';
+type NeoType = 'Address' | 'Boolean' | 'Integer' | 'Array';
 
-type TypedValue = { type: NeoType; value: string | boolean };
+type TypedValue = { type: NeoType; value: string | boolean | any[] };
 
 type InvokeReadArgs = {
   scriptHash: string;

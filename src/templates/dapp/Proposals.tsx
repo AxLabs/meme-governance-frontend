@@ -1,7 +1,14 @@
 import React from 'react';
 import {ProposalEntry} from "./ProposalEntry";
+import {MemeContractState} from "../../contracts/MemeContract";
+import {MemeGovernanceContractState} from "../../contracts/MemeGovernanceContract";
 
-const Proposals = ({govContractState, memeContractState}) => (
+type ProposalsProps = {
+  govContractState: MemeGovernanceContractState;
+  memeContractState: MemeContractState
+};
+
+const Proposals = ({govContractState}: ProposalsProps) => (
     <div
       className="bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden"
     >

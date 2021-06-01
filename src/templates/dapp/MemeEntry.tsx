@@ -1,6 +1,11 @@
 import React from 'react';
+import {MemeContractState} from "../../contracts/MemeContract";
 
-const MemeEntry = ({memeContractState}) => (
+type MemeEntryProps = {
+    memeContractState: MemeContractState;
+};
+
+const MemeEntry = ({memeContractState}: MemeEntryProps) => (
     <>
       {memeContractState.memes.map((m) => (
           <div className="bg-white w-1/2 m-auto border-1  border-dashed border-gray-100 shadow-md rounded-lg overflow-hidden">

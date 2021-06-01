@@ -1,8 +1,13 @@
 import React from 'react';
+import {MemeGovernanceContractState} from "../../contracts/MemeGovernanceContract";
 
-const ProposalEntry = ({govContractState}) => (
+type ProposalEntryProps = {
+    govContractState: MemeGovernanceContractState;
+};
+
+const ProposalEntry = ({govContractState}: ProposalEntryProps) => (
     <>
-        {govContractState.proposals.map((p) => (
+        {govContractState.proposals.map((_) => (
             <tr className="border-b border-gray-200 hover:bg-gray-100">
                 <td className="py-3 px-6 text-left whitespace-nowrap">
                     <div className="flex items-center">

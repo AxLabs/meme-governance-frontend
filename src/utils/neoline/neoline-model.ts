@@ -1,4 +1,4 @@
-type NeoType = 'Address' | 'Boolean' | 'Integer' | 'Array';
+type NeoType = 'Boolean' | 'Integer' | 'Array' | 'ByteArray' | 'String' | 'Hash160' | 'Hash256';
 
 type TypedValue = { type: NeoType; value: string | boolean | any[] };
 

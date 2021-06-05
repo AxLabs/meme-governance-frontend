@@ -1,47 +1,43 @@
-import {NeoLineN3Interface} from '../utils/neoline/neoline';
+import { NeoLineN3Interface } from '../utils/neoline/neoline';
+import { TypedValue } from '../utils/neoline/neoline-model';
 
-const MEME_CONTRACT_HASH = `0x${'3b4572c517d08a8ba46632cc35f45f4ca8081a01'}`;
+const MEME_CONTRACT_HASH = `0x${'8cdad4b33692fb3e4d16d8ae0ec4e5f5324c702a'}`;
 // const NO_OWNER_ZEROS_BASE64 = 'AAAAAAAAAAAAAAAAAAAAAAAAAAA=';
 
 const MemeContract = {
 
   getMemes: async (
-    neoLine: NeoLineN3Interface
+    neoLine: NeoLineN3Interface,
   ) => {
     const result = await neoLine.invokeRead({
       scriptHash: MEME_CONTRACT_HASH,
       operation: 'getMemes',
-      args: [{ type: 'Integer', value: '0' }],
-      signers: []
+      args: [{
+        type: 'Integer',
+        value: '0',
+      }],
+      signers: [],
     });
     console.log('getMemes result:', result);
 
     let memes: Meme[] = [];
-    if (result.state === 'HALT' && result.stack.length > 0 && result.stack[0].type === 'Array') {
-      const valueArray = (result.stack[0].value as any[])
-      if (valueArray.length > 0 && valueArray[0].type === 'Array') {
-        const proposalArray = (valueArray[0].value as any[])
-        const p = {
-          id: atob(proposalArray[0].value),
-          description: atob(proposalArray[1].value),
-          url: atob(proposalArray[2].value),
-          imageHash: atob(proposalArray[3].value),
-        }
-        memes.push(p);
-      }
+    if (result.state === 'HALT') {
+      memes = fromStackToMeme(result.stack);
     }
+
+    console.log('memes: ', memes);
     return memes;
   },
 
   updateContractState: async (
     neoLine: NeoLineN3Interface,
-    setContractState: (updatedState: MemeContractState) => void
+    setContractState: (updatedState: MemeContractState) => void,
   ) => {
     const updatedContractState: MemeContractState = { memes: [] };
     const memesResult: any = await MemeContract.getMemes(neoLine);
     updatedContractState.memes = memesResult;
     setContractState(updatedContractState);
-  }
+  },
 };
 
 export type MemeContractState = {
@@ -54,5 +50,35 @@ export type Meme = {
   url: string;
   imageHash: string;
 };
+
+export function fromStackToMeme(stack: TypedValue[]): Meme[] {
+  const memes: Meme[] = [];
+  if (stack != null && (stack as any[]).length > 0 && stack[0].type === 'Array') {
+    const valueArray = (stack[0].value as TypedValue[]);
+    valueArray.map((item) => {
+      if (item.type === 'Array') {
+        const memeArrayItem = (item.value as TypedValue[]);
+        const meme: Meme = fromStackItemToMeme(memeArrayItem);
+        if (meme != null) {
+          memes.push(meme);
+        }
+      }
+    });
+  }
+  return memes;
+}
+
+export function fromStackItemToMeme(item: TypedValue[]): Meme {
+  let meme: Meme = { id: '', description: '', url: '', imageHash: '' };
+  if (item.length > 0) {
+    meme = {
+      id: atob(item[0].value as string),
+      description: atob(item[1].value as string),
+      url: atob(item[2].value as string),
+      imageHash: atob(item[3].value as string),
+    };
+  }
+  return meme;
+}
 
 export { MemeContract };

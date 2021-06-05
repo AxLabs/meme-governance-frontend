@@ -1,17 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 
-import { MemeContract, MemeContractState } from '../../contracts/MemeContract';
+import Link from 'next/link';
+
+import { Button } from '../../button/Button';
+import { Meme, MemeContract, MemeContractState } from '../../contracts/MemeContract';
 import {
   MemeGovernanceContract,
   MemeGovernanceContractState,
 } from '../../contracts/MemeGovernanceContract';
+import ConfirmDialog from '../../dialog/ConfirmDialog';
 import { NeoLineN3Init, NeoLineN3Interface } from '../../utils/neoline/neoline';
 import InstallationInstructions from './InstallationInstructions';
 import { Memes } from './Memes';
 import { Proposals } from './Proposals';
 import SplashScreen from './SplashScreen';
 
-const SPLASH_SCREEN_DURATION_MS = 3000;
+const SPLASH_SCREEN_DURATION_MS = 5000;
+
+export type OnConfirmData = {
+  neoLine: NeoLineN3Interface;
+  newProposalMeme: Meme;
+  setNewProposalMeme: Dispatch<any>;
+};
+
+async function confirmSubmitProposal(onConfirmData: OnConfirmData) {
+  console.log('confirmSubmitProposal', onConfirmData);
+  const { neoLine, newProposalMeme, setNewProposalMeme } = onConfirmData;
+  const result = await MemeGovernanceContract.proposeNewMeme(
+    neoLine, newProposalMeme,
+  );
+  console.log('tx: ', result);
+  if (result.txid != null && result.txid.length > 0) {
+    setNewProposalMeme({
+      id: '',
+      description: '',
+      url: '',
+      imageHash: '',
+    });
+  }
+}
 
 const DAppMain = () => {
   const [neoLine, setNeoLine] = useState<NeoLineN3Interface | null>(null);
@@ -22,56 +49,159 @@ const DAppMain = () => {
   const [memeContractState, setMemeContractState] = useState<MemeContractState>({
     memes: [],
   });
+  const [newProposal, setNewProposal] = useState<Meme>({
+    id: '',
+    description: '',
+    url: '',
+    imageHash: '',
+  });
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
-  // TODO remove this
-  console.log(govContractState);
-  console.log(memeContractState);
+  const handleChange = function (evt: any) {
+    const { value } = evt.target;
+    setNewProposal({
+      ...newProposal,
+      [evt.target.name]: value,
+    });
+  };
 
   useEffect(() => {
-    if (!(window as any).NEOLineN3) {
-      window.addEventListener('NEOLine.NEO.EVENT.READY', async () => {
-        const neoLineObj = await NeoLineN3Init();
-        setNeoLine(neoLineObj);
-        await MemeGovernanceContract.updateContractState(neoLineObj, setGovContractState);
-        await MemeContract.updateContractState(neoLineObj, setMemeContractState);
-        window.addEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED',
-          () => {
-            MemeGovernanceContract.updateContractState(neoLineObj, setGovContractState);
-            MemeContract.updateContractState(neoLineObj, setMemeContractState);
-          });
-      });
-    } else {
-      const neoLineObj = new (window as any).NEOLineN3.Init();
+    window.addEventListener('NEOLine.NEO.EVENT.READY', async () => {
+      console.log('initializing neoline...');
+      const neoLineObj = await NeoLineN3Init();
       setNeoLine(neoLineObj);
-      MemeGovernanceContract.updateContractState(neoLineObj, setGovContractState);
-      MemeContract.updateContractState(neoLineObj, setMemeContractState);
-      window.addEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED',
-        () => {
-          MemeGovernanceContract.updateContractState(neoLineObj, setGovContractState);
-          MemeContract.updateContractState(neoLineObj, setMemeContractState);
-        });
-    }
+      await MemeGovernanceContract.updateContractState(neoLineObj, setGovContractState);
+      await MemeContract.updateContractState(neoLineObj, setMemeContractState);
+      window.addEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED', () => {
+        MemeGovernanceContract.updateContractState(neoLineObj, setGovContractState);
+        MemeContract.updateContractState(neoLineObj, setMemeContractState);
+      });
+    }, true);
+    // return () => {
+    //   window.removeEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED', updateContractsState);
+    //   window.removeEventListener('NEOLine.NEO.EVENT.READY', initNeoLine);
+    // };
   }, []);
 
   useEffect(() => {
     setTimeout(() => setShowSplashScreen(false), SPLASH_SCREEN_DURATION_MS);
   }, []);
 
-  if (neoLine) {
+  if (showSplashScreen) {
+    return <SplashScreen />;
+  } if (neoLine) {
     return (
       <>
         <div className="mx-5">
-          <span className="text-base md:text-xl font-bold">Memes:</span>
-          <Memes memeContractState={memeContractState} />
+          <div className="flex flex-wrap">
+            <span className="text-base md:text-xl font-bold">Memes:</span>
+            <Memes neoLine={neoLine} memeContractState={memeContractState} />
+          </div>
         </div>
         <div className="mx-5">
-          <span className="text-base md:text-xl font-bold">Proposals:</span>
-          <Proposals govContractState={govContractState} memeContractState={memeContractState} />
+          <div className="grid grid-cols-4 gap-4">
+            <span className="text-base md:text-xl font-bold">Proposals:</span>
+            <div />
+            <div />
+            <Link href="">
+              <a>
+                <Button>
+                  <button onClick={() => setConfirmOpen(true)}>
+                    <span className="flex justify-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 23 23"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      New Proposal
+                    </span>
+                  </button>
+                </Button>
+              </a>
+            </Link>
+          </div>
+          <Proposals
+            neoLine={neoLine}
+            govContractState={govContractState}
+            memeContractState={memeContractState}
+          />
+          <ConfirmDialog
+            title="New Proposal"
+            open={confirmOpen}
+            onClose={() => setConfirmOpen(false)}
+            onConfirm={confirmSubmitProposal}
+            onConfirmData={{
+              neoLine,
+              newProposalMeme: newProposal,
+              setNewProposalMeme: setNewProposal,
+            }}
+          >
+
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Meme ID
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                name="id"
+                type="text"
+                placeholder="memeId"
+                value={newProposal.id}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Description
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                name="description"
+                type="text"
+                placeholder="description"
+                value={newProposal.description}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Meme URL
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                name="url"
+                type="text"
+                placeholder="memeUrl"
+                value={newProposal.url}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Image Hash
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                name="imageHash"
+                type="text"
+                placeholder="imageHash"
+                value={newProposal.imageHash}
+                onChange={handleChange}
+              />
+            </div>
+          </ConfirmDialog>
         </div>
       </>
     );
-  } else if (showSplashScreen) {
-    return <SplashScreen />;
   }
   return <InstallationInstructions />;
 };

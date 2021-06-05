@@ -1,14 +1,53 @@
-import React from 'react';
-import {ProposalEntry} from "./ProposalEntry";
-import {MemeContractState} from "../../contracts/MemeContract";
-import {MemeGovernanceContractState} from "../../contracts/MemeGovernanceContract";
+import React, {useState} from 'react';
+
+import {MemeContractState} from '../../contracts/MemeContract';
+import {
+  MemeGovernanceContract,
+  MemeGovernanceContractState,
+  MemeGovernanceProposal,
+} from '../../contracts/MemeGovernanceContract';
+import ConfirmDialog from '../../dialog/ConfirmDialog';
+import {NeoLineN3Interface} from '../../utils/neoline/neoline';
+import {ProposalEntry} from './ProposalEntry';
+
+export type OnVoteConfirmationData = {
+  neoLine: NeoLineN3Interface;
+  proposal: MemeGovernanceProposal;
+  voteAction: boolean;
+};
+
+const onVoteConfirmation = async function (onVoteConfirmationData: OnVoteConfirmationData) {
+  console.log('vote to be sent: ', onVoteConfirmationData);
+  const { neoLine, proposal, voteAction } = onVoteConfirmationData;
+  const result = await MemeGovernanceContract.vote(neoLine, proposal.meme[0].id, voteAction);
+  console.log('tx: ', result);
+};
+
+export type OnExecuteConfirmationData = {
+  neoLine: NeoLineN3Interface;
+  proposal: MemeGovernanceProposal;
+};
+
+const onExecuteConfirmation = async function (onExecuteConfirmationData: OnExecuteConfirmationData) {
+  console.log('execution to be sent: ', onExecuteConfirmationData);
+  const { neoLine, proposal } = onExecuteConfirmationData;
+  const result = await MemeGovernanceContract.execute(neoLine, proposal.meme[0].id);
+  console.log('tx: ', result);
+};
 
 type ProposalsProps = {
   govContractState: MemeGovernanceContractState;
-  memeContractState: MemeContractState
+  neoLine: NeoLineN3Interface;
+  memeContractState: MemeContractState;
 };
 
-const Proposals = ({govContractState}: ProposalsProps) => (
+const Proposals = ({ govContractState, neoLine }: ProposalsProps) => {
+  const [voteDialogOpen, setVoteDialogOpen] = useState(false);
+  const [executeDialogOpen, setExecuteDialogOpen] = useState(false);
+  const [currentProposalForDialog, setCurrentProposalForDialog] = useState(null);
+  const [currentVoteAction, setCurrentVoteAction] = useState<boolean | null>(null);
+
+  return (
     <div
       className="bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden"
     >
@@ -26,12 +65,57 @@ const Proposals = ({govContractState}: ProposalsProps) => (
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              <ProposalEntry govContractState={govContractState}/>
+              {govContractState.proposals.map((p, index) => (
+                <ProposalEntry
+                  key={index}
+                  setVoteDialogOpen={setVoteDialogOpen}
+                  setExecuteDialogOpen={setExecuteDialogOpen}
+                  setCurrentProposalForDialog={setCurrentProposalForDialog}
+                  setCurrentVoteAction={setCurrentVoteAction}
+                  govContractEntry={p}
+                />
+              ))}
             </tbody>
           </table>
         </div>
       </div>
+      <ConfirmDialog
+        title="Vote on Proposal"
+        open={voteDialogOpen}
+        onClose={() => setVoteDialogOpen(false)}
+        onConfirm={onVoteConfirmation}
+        onConfirmData={{
+          neoLine,
+          proposal: currentProposalForDialog,
+          voteAction: currentVoteAction,
+        }}
+      >
+        <div className="mb-4">
+          <span className="block text-gray-700 text-sm font-bold mb-2">
+            Are you sure you would like to vote
+            <span className="font-bold">{currentVoteAction}</span>
+            ?
+          </span>
+        </div>
+      </ConfirmDialog>
+      <ConfirmDialog
+        title="Execute Proposal"
+        open={executeDialogOpen}
+        onClose={() => setExecuteDialogOpen(false)}
+        onConfirm={onExecuteConfirmation}
+        onConfirmData={{
+          neoLine,
+          proposal: currentProposalForDialog,
+        }}
+      >
+        <div className="mb-4">
+          <span className="block text-gray-700 text-sm font-bold mb-2">
+            Are you sure you would like to execute the proposal?
+          </span>
+        </div>
+      </ConfirmDialog>
     </div>
-);
+  );
+};
 
 export { Proposals };

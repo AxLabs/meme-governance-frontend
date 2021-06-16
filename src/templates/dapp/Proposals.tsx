@@ -51,7 +51,7 @@ const Proposals = ({ govContractState, neoLine }: ProposalsProps) => {
     <div
       className="bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden"
     >
-      <div className="w-full lg:w-5/6">
+      <div className="w-full">
         <div className="bg-white shadow-md rounded my-6">
           <table className="min-w-max w-full table-auto">
             <thead>

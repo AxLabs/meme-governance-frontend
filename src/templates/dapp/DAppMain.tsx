@@ -91,7 +91,7 @@ const DAppMain = () => {
     return <SplashScreen />;
   } if (neoLine) {
     return (
-      <>
+      <div className="grid items-center justify-center">
         <div className="mx-5">
           <div className="flex flex-wrap">
             <span className="text-base md:text-xl font-bold">Memes:</span>
@@ -99,35 +99,37 @@ const DAppMain = () => {
           </div>
         </div>
         <div className="mx-5">
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-4">
             <span className="text-base md:text-xl font-bold">Proposals:</span>
             <div />
             <div />
-            <Link href="">
-              <a>
-                <Button>
-                  <button onClick={() => setConfirmOpen(true)}>
-                    <span className="flex justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 23 23"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      New Proposal
-                    </span>
-                  </button>
-                </Button>
-              </a>
-            </Link>
+            <div>
+              <Link href="">
+                <a>
+                  <Button>
+                    <button onClick={() => setConfirmOpen(true)}>
+                      <span className="flex justify-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 23 23"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        New Proposal
+                      </span>
+                    </button>
+                  </Button>
+                </a>
+              </Link>
+            </div>
           </div>
           <Proposals
             neoLine={neoLine}
@@ -200,7 +202,7 @@ const DAppMain = () => {
             </div>
           </ConfirmDialog>
         </div>
-      </>
+      </div>
     );
   }
   return <InstallationInstructions />;

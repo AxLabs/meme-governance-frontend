@@ -1,11 +1,12 @@
 # Meme Governance Frontend
 
-This repo is the frontend for the Meme Governance dApp example.
+This repo is the frontend for the **Meme Governance dApp** example. 🚀
 
 It contains:
 
 - Landing page for your project (served on the `/` path, e.g., `http://localhost:8080/`)
 - dApp functionality (served on the `/dapp` path, e.g., `http://localhost:8080/dapp`)
+- Full integration to [NeoLine](https://neoline.io/en/) browser wallet
 
 🚀 Written in [Next.js](https://nextjs.org), [Tailwind CSS](https://tailwindcss.com), and [TypeScript](https://www.typescriptlang.org) ⚡️ 
 
@@ -21,7 +22,6 @@ Developer experience first:
 - 🛠 Code Formatter with [Prettier](https://prettier.io)
 - 🦊 SEO metadata, [JSON-LD](https://developers.google.com/search/docs/guides/intro-structured-data) and [Open Graph](https://ogp.me/) tags with [Next SEO](https://github.com/garmeeh/next-seo)
 - ⚙️ [Bundler Analyzer](https://www.npmjs.com/package/@next/bundle-analyzer)
-- 💯 Maximize lighthouse score
 
 Built-in feature from Next.js:
 
@@ -31,8 +31,8 @@ Built-in feature from Next.js:
 
 ## Requirements
 
-- Node.js version 12 
-- npm
+- **Node.js version 12**
+- **npm**
 
 ## Getting started
 

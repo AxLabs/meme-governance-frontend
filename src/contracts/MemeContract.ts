@@ -1,7 +1,7 @@
 import { NeoLineN3Interface } from '../utils/neoline/neoline';
 import { TypedValue } from '../utils/neoline/neoline-model';
 
-const MEME_CONTRACT_HASH = `0x${'8cdad4b33692fb3e4d16d8ae0ec4e5f5324c702a'}`;
+const MEME_CONTRACT_HASH = `0x${'3298f0592ad719084518850eb7147cebb1564dd2'}`;
 // const NO_OWNER_ZEROS_BASE64 = 'AAAAAAAAAAAAAAAAAAAAAAAAAAA=';
 
 const MemeContract = {

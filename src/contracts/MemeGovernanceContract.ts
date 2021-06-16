@@ -4,7 +4,7 @@ import { NeoLineN3Interface } from '../utils/neoline/neoline';
 import { TypedValue } from '../utils/neoline/neoline-model';
 import { fromStackItemToMeme, Meme } from './MemeContract';
 
-const MEME_GOVERNANCE_CONTRACT_HASH = `0x${'44588563c5a96a9d92c5b698e796c2eea7c99f0a'}`;
+const MEME_GOVERNANCE_CONTRACT_HASH = `0x${'7ab855b7a0d798e9a14221b5eca55a358c1f0573'}`;
 // const NO_OWNER_ZEROS_BASE64 = 'AAAAAAAAAAAAAAAAAAAAAAAAAAA=';
 
 const MemeGovernanceContract = {

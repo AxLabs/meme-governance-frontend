@@ -8,11 +8,12 @@ interface Props {
   onClose: Function;
   onConfirm: Function;
   onConfirmData: any;
+  confirmButtonText: string;
 }
 
 export default function ConfirmDialog(props: Props) {
   const {
-    open, onClose, title, children, onConfirm, onConfirmData,
+    open, onClose, title, children, onConfirm, onConfirmData, confirmButtonText,
   } = props;
   if (!open) {
     return <></>;
@@ -30,7 +31,7 @@ export default function ConfirmDialog(props: Props) {
               onConfirm(onConfirmData);
             }}
           >
-            Yes
+            {confirmButtonText}
           </DialogButton>
         </div>
       </div>

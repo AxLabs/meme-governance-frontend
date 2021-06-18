@@ -1,5 +1,6 @@
 import React, { Dispatch, useEffect, useState } from 'react';
 
+import { sha256 } from 'js-sha256';
 import Link from 'next/link';
 
 import { Button } from '../../button/Button';
@@ -63,6 +64,42 @@ const DAppMain = () => {
       ...newProposal,
       [evt.target.name]: value,
     });
+    if (evt.target.name === 'url') {
+      // TODO: check if the input is really a URL. :-)
+      fetch(value, {
+        method: 'GET',
+      })
+        .then((response) => response.blob())
+        .then((blob) => {
+          const fileBlob: Blob = new Blob([blob]);
+          console.log('file size:', fileBlob.size);
+          let blobArrayBuffer: ArrayBuffer | null | string | undefined;
+          const fileReader: FileReader = new FileReader();
+          fileReader.onload = function (event) {
+            if (event.target) {
+              blobArrayBuffer = event.target?.result;
+              if (blobArrayBuffer) {
+                const imageHash = sha256(blobArrayBuffer);
+                console.log('imageHash: ', imageHash);
+                setNewProposal({
+                  ...newProposal,
+                  [evt.target.name]: value,
+                  imageHash,
+                });
+              }
+            }
+          };
+          fileReader.readAsArrayBuffer(blob);
+        })
+        .catch((e) => {
+          console.log(e);
+          setNewProposal({
+            ...newProposal,
+            [evt.target.name]: value,
+            imageHash: '',
+          });
+        });
+    }
   };
 
   useEffect(() => {
@@ -93,8 +130,10 @@ const DAppMain = () => {
     return (
       <div className="grid items-center justify-center">
         <div className="mx-5">
-          <div className="flex flex-wrap">
-            <span className="text-base md:text-xl font-bold">Memes:</span>
+          <div className="grid grid-cols-1 grid-rows-2 flex-wrap">
+            <>
+              <span className="text-base md:text-xl font-bold">Memes:</span>
+            </>
             <Memes neoLine={neoLine} memeContractState={memeContractState} />
           </div>
         </div>
@@ -146,6 +185,7 @@ const DAppMain = () => {
               newProposalMeme: newProposal,
               setNewProposalMeme: setNewProposal,
             }}
+            confirmButtonText="Create"
           >
 
             <div className="mb-4">

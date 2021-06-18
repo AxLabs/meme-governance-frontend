@@ -19,8 +19,8 @@ const DAppBase = () => (
       <Section yPadding="py-6">
         <NavbarTwoColumns logo={<Logo xl />}>
           <li>
-            <Link href="https://github.com/AxLabs/meme-governance-frontend">
-              <Button>FAQ</Button>
+            <Link href="https://neow3j.io">
+              <Button>Help?</Button>
             </Link>
           </li>
         </NavbarTwoColumns>

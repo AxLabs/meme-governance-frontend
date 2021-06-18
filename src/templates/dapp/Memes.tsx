@@ -50,6 +50,7 @@ const Memes = ({ neoLine, memeContractState }: MemesProps) => {
           neoLine,
           meme: currentMemeForDialog,
         }}
+        confirmButtonText="Yes, let's remove this crap."
       >
         <div className="mb-4">
           <span className="block text-gray-700 text-sm font-bold mb-2">

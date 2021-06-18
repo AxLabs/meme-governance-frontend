@@ -89,11 +89,13 @@ const Proposals = ({ govContractState, neoLine }: ProposalsProps) => {
           proposal: currentProposalForDialog,
           voteAction: currentVoteAction,
         }}
+        confirmButtonText="Yes! Let's do it!"
       >
         <div className="mb-4">
           <span className="block text-gray-700 text-sm font-bold mb-2">
             Are you sure you would like to vote
-            <span className="font-bold">{currentVoteAction}</span>
+            {' '}
+            { currentVoteAction ? 'in favor' : 'against it' }
             ?
           </span>
         </div>
@@ -107,6 +109,7 @@ const Proposals = ({ govContractState, neoLine }: ProposalsProps) => {
           neoLine,
           proposal: currentProposalForDialog,
         }}
+        confirmButtonText="Yes, execute it!"
       >
         <div className="mb-4">
           <span className="block text-gray-700 text-sm font-bold mb-2">

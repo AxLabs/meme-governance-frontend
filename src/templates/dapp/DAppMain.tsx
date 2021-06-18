@@ -103,21 +103,32 @@ const DAppMain = () => {
   };
 
   useEffect(() => {
-    window.addEventListener('NEOLine.NEO.EVENT.READY', async () => {
+    async function updateContractsState() {
+      const neoLineObj = await NeoLineN3Init();
+      setNeoLine(neoLineObj);
+      MemeGovernanceContract.updateContractState(neoLineObj, setGovContractState);
+      MemeContract.updateContractState(neoLineObj, setMemeContractState);
+    }
+    async function initNeoLine() {
       console.log('initializing neoline...');
       const neoLineObj = await NeoLineN3Init();
       setNeoLine(neoLineObj);
       await MemeGovernanceContract.updateContractState(neoLineObj, setGovContractState);
       await MemeContract.updateContractState(neoLineObj, setMemeContractState);
-      window.addEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED', () => {
-        MemeGovernanceContract.updateContractState(neoLineObj, setGovContractState);
-        MemeContract.updateContractState(neoLineObj, setMemeContractState);
-      });
-    }, true);
-    // return () => {
-    //   window.removeEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED', updateContractsState);
-    //   window.removeEventListener('NEOLine.NEO.EVENT.READY', initNeoLine);
-    // };
+      window.addEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED', updateContractsState);
+    }
+
+    if ((window as any).NEOLineN3) {
+      console.log('NEOLineN3 is already initialized!');
+      window.addEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED', updateContractsState, true);
+    } else {
+      console.log('NEOLineN3 is not yet initialized...');
+      window.addEventListener('NEOLine.NEO.EVENT.READY', initNeoLine, true);
+    }
+    return () => {
+      window.removeEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED', updateContractsState);
+      window.removeEventListener('NEOLine.NEO.EVENT.READY', initNeoLine);
+    };
   }, []);
 
   useEffect(() => {

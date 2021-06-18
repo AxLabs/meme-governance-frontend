@@ -25,7 +25,7 @@ const MemeEntry = ({
         {memeContractEntry.id}
       </p>
 
-      <p className="flex mb-1 text-gray-900">
+      <div className="flex mb-1 text-gray-900">
         <div className="flex gap-1">
           <span className="font-semibold">URL: </span>
           <Link href={memeContractEntry.url}>
@@ -46,16 +46,16 @@ const MemeEntry = ({
             </a>
           </Link>
         </div>
-      </p>
+      </div>
 
-      <p className="mb-1 text-gray-900">
+      <div className="mb-1 text-gray-900">
         <span className="font-semibold">Description: </span>
         <p>
           <span className="text-gray-700">{memeContractEntry.description}</span>
         </p>
-      </p>
+      </div>
 
-      <p className="flex mb-1 text-gray-900 text-center text-justify">
+      <div className="flex mb-1 text-gray-900 text-center text-justify">
         <div className="flex gap-1">
           <span className="font-semibold">Actions: </span>
           <Link href="">
@@ -84,7 +84,7 @@ const MemeEntry = ({
             </a>
           </Link>
         </div>
-      </p>
+      </div>
     </div>
   </div>
 );

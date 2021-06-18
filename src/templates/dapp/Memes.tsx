@@ -31,7 +31,7 @@ const Memes = ({ neoLine, memeContractState }: MemesProps) => {
 
   return (
     <>
-      <div className="grid grid-cols-3 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 flex my-10 mx-10 mx-auto px-4 md:px-12 gap-5">
+      <div className="grid grid-cols-2 auto-col-max auto-col-min my-10 mx-10 mx-auto px-4 md:px-12 gap-5 items-center justify-center">
         {memeContractState.memes.map((m, index) => (
           <MemeEntry
             key={index}

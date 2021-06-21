@@ -120,6 +120,9 @@ const DAppMain = () => {
 
     if ((window as any).NEOLineN3) {
       console.log('NEOLineN3 is already initialized!');
+      NeoLineN3Init().then((nLine) => {
+        setNeoLine(nLine);
+      });
       window.addEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED', updateContractsState, true);
     } else {
       console.log('NEOLineN3 is not yet initialized...');
@@ -137,14 +140,13 @@ const DAppMain = () => {
 
   if (showSplashScreen) {
     return <SplashScreen />;
-  } if (neoLine) {
+  }
+  if (neoLine) {
     return (
       <div className="grid items-center justify-center">
         <div className="mx-5">
           <div className="grid grid-cols-1 grid-rows-2 flex-wrap">
-            <>
-              <span className="text-base md:text-xl font-bold">Memes:</span>
-            </>
+            <span className="text-base md:text-xl font-bold">Memes:</span>
             <Memes neoLine={neoLine} memeContractState={memeContractState} />
           </div>
         </div>

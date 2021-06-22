@@ -142,7 +142,7 @@ const DAppMain = () => {
     return (
       <div className="grid items-center justify-center">
         <div className="mx-5">
-          <div className="grid grid-cols-1 grid-rows-2 flex-wrap">
+          <div className="grid grid-cols-1 flex-wrap">
             <span className="text-base md:text-xl font-bold">Memes:</span>
             <Memes neoLine={neoLine} memeContractState={memeContractState} />
           </div>

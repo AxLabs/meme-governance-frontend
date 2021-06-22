@@ -102,35 +102,32 @@ const DAppMain = () => {
     }
   };
 
-  useEffect(() => {
-    async function updateContractsState() {
-      const neoLineObj = await NeoLineN3Init();
-      setNeoLine(neoLineObj);
-      MemeGovernanceContract.updateContractState(neoLineObj, setGovContractState);
-      MemeContract.updateContractState(neoLineObj, setMemeContractState);
-    }
-    async function initNeoLine() {
-      console.log('initializing neoline...');
-      const neoLineObj = await NeoLineN3Init();
-      setNeoLine(neoLineObj);
-      await MemeGovernanceContract.updateContractState(neoLineObj, setGovContractState);
-      await MemeContract.updateContractState(neoLineObj, setMemeContractState);
-      window.addEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED', updateContractsState);
-    }
+  const updateContractsState = async () => {
+    const neoLineObj = await NeoLineN3Init();
+    setNeoLine(neoLineObj);
+    MemeGovernanceContract.updateContractState(neoLineObj, setGovContractState);
+    MemeContract.updateContractState(neoLineObj, setMemeContractState);
+  };
+  const initNeoLine = async () => {
+    console.log('initializing neoline...');
+    const neoLineObj = await NeoLineN3Init();
+    setNeoLine(neoLineObj);
+    MemeGovernanceContract.updateContractState(neoLineObj, setGovContractState);
+    MemeContract.updateContractState(neoLineObj, setMemeContractState);
+    window.addEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED', updateContractsState, true);
+  };
 
+  useEffect(() => {
     if ((window as any).NEOLineN3) {
-      console.log('NEOLineN3 is already initialized!');
-      NeoLineN3Init().then((nLine) => {
-        setNeoLine(nLine);
-      });
-      window.addEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED', updateContractsState, true);
+      console.log('NEOLineN3 is already initialized...');
+      initNeoLine();
     } else {
       console.log('NEOLineN3 is not yet initialized...');
       window.addEventListener('NEOLine.NEO.EVENT.READY', initNeoLine, true);
     }
-    return () => {
-      window.removeEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED', updateContractsState);
-      window.removeEventListener('NEOLine.NEO.EVENT.READY', initNeoLine);
+    return function cleanUp() {
+      window.removeEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED', updateContractsState, true);
+      window.removeEventListener('NEOLine.NEO.EVENT.READY', initNeoLine, true);
     };
   }, []);
 

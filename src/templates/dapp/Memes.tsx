@@ -12,7 +12,7 @@ export type OnProposeToRemoveConfirmationData = {
 };
 
 const onProposeToRemoveConfirmation = async function (
-  onProposeToRemoveConfirmationData: OnProposeToRemoveConfirmationData,
+  onProposeToRemoveConfirmationData: OnProposeToRemoveConfirmationData
 ) {
   console.log('proposal to be sent: ', onProposeToRemoveConfirmationData);
   const { neoLine, meme } = onProposeToRemoveConfirmationData;
@@ -22,7 +22,7 @@ const onProposeToRemoveConfirmation = async function (
 
 type MemesProps = {
   neoLine: NeoLineN3Interface;
-  memeContractState: MemeContractState
+  memeContractState: MemeContractState;
 };
 
 const Memes = ({ neoLine, memeContractState }: MemesProps) => {

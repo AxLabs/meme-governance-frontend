@@ -8,6 +8,19 @@
     "react/destructuring-assignment": "off", // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
     "jsx-a11y/anchor-is-valid": "off", // Next.js use his own internal link system
     "react/require-default-props": "off", // Allow non-defined react props as undefined
+    "react/react-in-jsx-scope": "off", // Prevent missing React when using JSX
+    "no-console": "off", // Disallow the use of console
+    "react/button-has-type": "off", // Prevent usage of button elements without an explicit type attribute
+    "react/no-array-index-key": "off", // Prevent usage of Array index in keys 
+    "no-plusplus": "off", // Disallow the unary operators ++ and -- 
+    "jsx-a11y/label-has-associated-control": "off", // Enforce that a label tag has a text label and an associated control.
+    "func-names": "off", // Require or disallow named function expressions
+    "@typescript-eslint/comma-dangle": "off", // Require or disallow trailing comma
+    "react/jsx-one-expression-per-line": "off", // One JSX Element Per Line
+    "react/jsx-wrap-multilines": "off", // Prevent missing parentheses around multiline JSX
+    "object-curly-newline": "off", // Enforce consistent line breaks after opening and before closing braces
+    "implicit-arrow-linebreak": "off", // Enforce the location of arrow function bodies with implicit returns
+    "function-paren-newline": "off", // Enforce consistent line breaks inside function parentheses
     "import/order": [
       "error",
       {

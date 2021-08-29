@@ -1,6 +1,4 @@
-import {
-  InvokeReadArgs, InvokeWriteArgs, NeoAccount, Signers, TypedValue,
-} from './neoline-model';
+import { InvokeReadArgs, InvokeWriteArgs, NeoAccount, Signers, TypedValue } from './neoline-model';
 
 type GetBalanceArgs = { address: string; contracts: string[] };
 
@@ -11,7 +9,9 @@ type GetBalanceArgs = { address: string; contracts: string[] };
 interface NeoLineN3Interface {
   getAccount(): Promise<NeoAccount>;
 
-  getBalance(params: GetBalanceArgs[]): Promise<{
+  getBalance(
+    params: GetBalanceArgs[]
+  ): Promise<{
     [address: string]: { contract: string; symbol: string; amount: string }[];
   }>;
 
@@ -32,9 +32,11 @@ interface NeoLineN3Interface {
 function NeoLineN3Init(): Promise<NeoLineN3Interface> {
   // Use an async pattern as the global NEOLineN3 is not available while
   // the NEOLine.NEO.EVENT.READY event is still firing:
-  return new Promise((resolve) => setTimeout(() => {
-    resolve(new (window as any).NEOLineN3.Init());
-  }, 10));
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      resolve(new (window as any).NEOLineN3.Init());
+    }, 10)
+  );
 }
 
 export { NeoLineN3Init };

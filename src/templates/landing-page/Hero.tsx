@@ -28,20 +28,20 @@ const Hero = () => (
 
     <Section yPadding="pt-20 pb-32">
       <HeroOneButton
-        title={(
+        title={
           <>
             {'The Best Memes, ever.\n'}
             Built and Governed on <span className="text-primary-500">Neo N3</span>
           </>
-        )}
+        }
         description="Propose new ones, vote on the best, and dump the shittiest..."
-        button={(
+        button={
           <Link href="/dapp">
             <a>
               <Button xl>Let&lsquo;s do it!</Button>
             </a>
           </Link>
-        )}
+        }
       />
     </Section>
   </Background>

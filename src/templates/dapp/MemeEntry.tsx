@@ -1,3 +1,6 @@
+// TODO: Fix eslint errors
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Dispatch } from 'react';
 
 import Link from 'next/link';
@@ -15,9 +18,7 @@ const MemeEntry = ({
   setCurrentMemeForDialog,
   memeContractEntry,
 }: MemeEntryProps) => (
-  <div
-    className="bg-white max-w-sm border-1 border-dashed border-gray-100 shadow-md rounded-lg overflow-hidden"
-  >
+  <div className="bg-white max-w-sm border-1 border-dashed border-gray-100 shadow-md rounded-lg overflow-hidden">
     <img src={memeContractEntry.url} alt="" className="w-full object-cover object-center" />
     <div className="p-4">
       <p className="mb-1 text-gray-900">
@@ -36,12 +37,8 @@ const MemeEntry = ({
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
-                <path
-                  d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"
-                />
-                <path
-                  d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"
-                />
+                <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
               </svg>
             </a>
           </Link>
@@ -59,10 +56,11 @@ const MemeEntry = ({
         <div className="flex gap-1">
           <span className="font-semibold">Actions: </span>
           <Link href="">
-            <a onClick={() => {
-              setCurrentMemeForDialog(memeContractEntry);
-              setProposeToRemoveDialogOpen(true);
-            }}
+            <a
+              onClick={() => {
+                setCurrentMemeForDialog(memeContractEntry);
+                setProposeToRemoveDialogOpen(true);
+              }}
             >
               <span className="flex bg-red-200 hover:bg-red-300 text-red-500 py-1 px-3 rounded-md text-xs">
                 Proposal to Remove

@@ -15,20 +15,19 @@ export default function InstallationInstructions() {
             NeoLine
           </a>
         </Link>
-      </span>
-      {' '}
+      </span>{' '}
       is required to use this dApp.
       <style jsx>
         {`
-        .neoline-link :global(a) {
-          @apply text-green-400;
-        }
+          .neoline-link :global(a) {
+            @apply text-green-400;
+          }
 
-        .neoline-link :global(a:hover) {
-          @apply underline;
-          @apply font-bold;
-        }
-      `}
+          .neoline-link :global(a:hover) {
+            @apply underline;
+            @apply font-bold;
+          }
+        `}
       </style>
     </div>
   );

@@ -12,9 +12,7 @@ interface Props {
 }
 
 export default function ConfirmDialog(props: Props) {
-  const {
-    open, onClose, title, children, onConfirm, onConfirmData, confirmButtonText,
-  } = props;
+  const { open, onClose, title, children, onConfirm, onConfirmData, confirmButtonText } = props;
   if (!open) {
     return <></>;
   }

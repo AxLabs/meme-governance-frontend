@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import { wallet as wallet3 } from '@cityofzion/neon-js';
 
 import { NeoLineN3Interface } from '../utils/neoline/neoline';
@@ -7,18 +8,42 @@ import { fromStackItemToMeme, Meme } from './MemeContract';
 const MEME_GOVERNANCE_CONTRACT_HASH = `0x${'7ab855b7a0d798e9a14221b5eca55a358c1f0573'}`;
 // const NO_OWNER_ZEROS_BASE64 = 'AAAAAAAAAAAAAAAAAAAAAAAAAAA=';
 
-const MemeGovernanceContract = {
+export function fromStackToMemeGovernanceProposal(stack: TypedValue[]): MemeGovernanceProposal[] {
+  const proposals: MemeGovernanceProposal[] = [];
+  if (stack != null && stack.length > 0 && stack[0].type === 'Array') {
+    const valueArray = stack[0].value as any[];
+    // TODO: Fix the array callback type
+    // eslint-disable-next-line array-callback-return
+    valueArray.map((item) => {
+      if (item.type === 'Array') {
+        const proposalArray = item.value as TypedValue[];
+        const p = {
+          meme: [fromStackItemToMeme(proposalArray[0].value as TypedValue[])],
+          create: Number(proposalArray[1].value) === 1,
+          voteInProgress: Number(proposalArray[2].value) === 1,
+          finalizationBlock: Number(proposalArray[3].value),
+          votesInFavor: Number(proposalArray[4].value),
+          votesAgainst: Number(proposalArray[5].value),
+        };
+        proposals.push(p);
+      }
+    });
+  }
+  console.log('proposals: ', proposals);
+  return proposals;
+}
 
-  getProposals: async (
-    neoLine: NeoLineN3Interface,
-  ) => {
+const MemeGovernanceContract = {
+  getProposals: async (neoLine: NeoLineN3Interface) => {
     const result = await neoLine.invokeRead({
       scriptHash: MEME_GOVERNANCE_CONTRACT_HASH,
       operation: 'getProposals',
-      args: [{
-        type: 'Integer',
-        value: '0',
-      }],
+      args: [
+        {
+          type: 'Integer',
+          value: '0',
+        },
+      ],
       signers: [],
     });
     console.log('getProposals result:', result);
@@ -30,10 +55,7 @@ const MemeGovernanceContract = {
     return proposals;
   },
 
-  proposeNewMeme: async (
-    neoLine: NeoLineN3Interface,
-    meme: Meme,
-  ) => {
+  proposeNewMeme: async (neoLine: NeoLineN3Interface, meme: Meme) => {
     const account = await neoLine.getAccount();
     if (!account) {
       return;
@@ -76,11 +98,7 @@ const MemeGovernanceContract = {
     return result;
   },
 
-  vote: async (
-    neoLine: NeoLineN3Interface,
-    memeId: string,
-    inFavor: boolean,
-  ) => {
+  vote: async (neoLine: NeoLineN3Interface, memeId: string, inFavor: boolean) => {
     const account = await neoLine.getAccount();
     if (!account) {
       return;
@@ -118,10 +136,7 @@ const MemeGovernanceContract = {
     return result;
   },
 
-  execute: async (
-    neoLine: NeoLineN3Interface,
-    memeId: string,
-  ) => {
+  execute: async (neoLine: NeoLineN3Interface, memeId: string) => {
     const account = await neoLine.getAccount();
     if (!account) {
       return;
@@ -149,10 +164,7 @@ const MemeGovernanceContract = {
     return result;
   },
 
-  proposeRemoval: async (
-    neoLine: NeoLineN3Interface,
-    memeId: string,
-  ) => {
+  proposeRemoval: async (neoLine: NeoLineN3Interface, memeId: string) => {
     const account = await neoLine.getAccount();
     if (!account) {
       return;
@@ -182,7 +194,7 @@ const MemeGovernanceContract = {
 
   updateContractState: async (
     neoLine: NeoLineN3Interface,
-    setContractState: (updatedState: MemeGovernanceContractState) => void,
+    setContractState: (updatedState: MemeGovernanceContractState) => void
   ) => {
     const updatedContractState: MemeGovernanceContractState = { proposals: [] };
     updatedContractState.proposals = await MemeGovernanceContract.getProposals(neoLine);
@@ -202,28 +214,5 @@ export type MemeGovernanceProposal = {
   votesInFavor: Number;
   votesAgainst: Number;
 };
-
-export function fromStackToMemeGovernanceProposal(stack: TypedValue[]): MemeGovernanceProposal[] {
-  const proposals: MemeGovernanceProposal[] = [];
-  if (stack != null && stack.length > 0 && stack[0].type === 'Array') {
-    const valueArray = (stack[0].value as any[]);
-    valueArray.map((item) => {
-      if (item.type === 'Array') {
-        const proposalArray = (item.value as TypedValue[]);
-        const p = {
-          meme: [fromStackItemToMeme(proposalArray[0].value as TypedValue[])],
-          create: (Number(proposalArray[1].value) == 1),
-          voteInProgress: (Number(proposalArray[2].value) == 1),
-          finalizationBlock: Number(proposalArray[3].value),
-          votesInFavor: Number(proposalArray[4].value),
-          votesAgainst: Number(proposalArray[5].value),
-        };
-        proposals.push(p);
-      }
-    });
-  }
-  console.log('proposals: ', proposals);
-  return proposals;
-}
 
 export { MemeGovernanceContract };

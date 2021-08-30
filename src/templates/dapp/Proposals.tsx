@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import {MemeContractState} from '../../contracts/MemeContract';
+import { MemeContractState } from '../../contracts/MemeContract';
 import {
   MemeGovernanceContract,
   MemeGovernanceContractState,
   MemeGovernanceProposal,
 } from '../../contracts/MemeGovernanceContract';
 import ConfirmDialog from '../../dialog/ConfirmDialog';
-import {NeoLineN3Interface} from '../../utils/neoline/neoline';
-import {ProposalEntry} from './ProposalEntry';
+import { NeoLineN3Interface } from '../../utils/neoline/neoline';
+import { ProposalEntry } from './ProposalEntry';
 
 export type OnVoteConfirmationData = {
   neoLine: NeoLineN3Interface;
@@ -28,7 +28,9 @@ export type OnExecuteConfirmationData = {
   proposal: MemeGovernanceProposal;
 };
 
-const onExecuteConfirmation = async function (onExecuteConfirmationData: OnExecuteConfirmationData) {
+const onExecuteConfirmation = async function (
+  onExecuteConfirmationData: OnExecuteConfirmationData
+) {
   console.log('execution to be sent: ', onExecuteConfirmationData);
   const { neoLine, proposal } = onExecuteConfirmationData;
   const result = await MemeGovernanceContract.execute(neoLine, proposal.meme[0].id);
@@ -38,6 +40,8 @@ const onExecuteConfirmation = async function (onExecuteConfirmationData: OnExecu
 type ProposalsProps = {
   govContractState: MemeGovernanceContractState;
   neoLine: NeoLineN3Interface;
+  // TODO: Make sure it's not being used
+  // eslint-disable-next-line react/no-unused-prop-types
   memeContractState: MemeContractState;
 };
 
@@ -48,9 +52,7 @@ const Proposals = ({ govContractState, neoLine }: ProposalsProps) => {
   const [currentVoteAction, setCurrentVoteAction] = useState<boolean | null>(null);
 
   return (
-    <div
-      className="bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden"
-    >
+    <div className="bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden">
       <div className="w-full">
         <div className="bg-white shadow-md rounded my-6">
           <table className="min-w-max w-full table-auto">
@@ -93,10 +95,7 @@ const Proposals = ({ govContractState, neoLine }: ProposalsProps) => {
       >
         <div className="mb-4">
           <span className="block text-gray-700 text-sm font-bold mb-2">
-            Are you sure you would like to vote
-            {' '}
-            { currentVoteAction ? 'in favor' : 'against it' }
-            ?
+            Are you sure you would like to vote {currentVoteAction ? 'in favor' : 'against it'}?
           </span>
         </div>
       </ConfirmDialog>

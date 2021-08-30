@@ -27,9 +27,7 @@ export type OnConfirmData = {
 async function confirmSubmitProposal(onConfirmData: OnConfirmData) {
   console.log('confirmSubmitProposal', onConfirmData);
   const { neoLine, newProposalMeme, setNewProposalMeme } = onConfirmData;
-  const result = await MemeGovernanceContract.proposeNewMeme(
-    neoLine, newProposalMeme,
-  );
+  const result = await MemeGovernanceContract.proposeNewMeme(neoLine, newProposalMeme);
   console.log('tx: ', result);
   if (result.txid != null && result.txid.length > 0) {
     setNewProposalMeme({
@@ -126,7 +124,11 @@ const DAppMain = () => {
       window.addEventListener('NEOLine.NEO.EVENT.READY', initNeoLine, true);
     }
     return function cleanUp() {
-      window.removeEventListener('NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED', updateContractsState, true);
+      window.removeEventListener(
+        'NEOLine.NEO.EVENT.BLOCK_HEIGHT_CHANGED',
+        updateContractsState,
+        true
+      );
       window.removeEventListener('NEOLine.NEO.EVENT.READY', initNeoLine, true);
     };
   }, []);
@@ -197,11 +199,8 @@ const DAppMain = () => {
             }}
             confirmButtonText="Create"
           >
-
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Meme ID
-              </label>
+              <label className="block text-gray-700 text-sm font-bold mb-2">Meme ID</label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="id"
@@ -212,9 +211,7 @@ const DAppMain = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Description
-              </label>
+              <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="description"
@@ -225,9 +222,7 @@ const DAppMain = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Meme URL
-              </label>
+              <label className="block text-gray-700 text-sm font-bold mb-2">Meme URL</label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="url"
@@ -238,9 +233,7 @@ const DAppMain = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Image Hash
-              </label>
+              <label className="block text-gray-700 text-sm font-bold mb-2">Image Hash</label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="imageHash"

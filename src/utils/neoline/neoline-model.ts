@@ -15,7 +15,7 @@ type InvokeWriteArgs = {
 
 type NeoAccount = {
   address: string;
-  label: string
+  label: string;
 };
 
 type Signers = {
@@ -24,9 +24,7 @@ type Signers = {
 
 type Signer = {
   account: string;
-  scopes: number
+  scopes: number;
 };
 
-export type {
-  InvokeReadArgs, InvokeWriteArgs, NeoAccount, Signers, Signer, TypedValue,
-};
+export type { InvokeReadArgs, InvokeWriteArgs, NeoAccount, Signers, Signer, TypedValue };

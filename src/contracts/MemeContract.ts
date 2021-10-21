@@ -1,8 +1,7 @@
 import { NeoLineN3Interface } from '../utils/neoline/neoline';
 import { TypedValue } from '../utils/neoline/neoline-model';
 
-const MEME_CONTRACT_HASH = `0x${'3298f0592ad719084518850eb7147cebb1564dd2'}`;
-// const NO_OWNER_ZEROS_BASE64 = 'AAAAAAAAAAAAAAAAAAAAAAAAAAA=';
+const MEME_CONTRACT_HASH = process.env.NEXT_PUBLIC_MEME_CONTRACT_HASH || '';
 
 export type MemeContractState = {
   memes: Meme[];

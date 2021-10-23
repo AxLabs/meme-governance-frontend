@@ -20,7 +20,9 @@ const DAppBase = () => (
         <NavbarTwoColumns logo={<Logo xl />}>
           <li>
             <Link href="https://neow3j.io">
-              <Button>Help?</Button>
+              <a>
+                <Button>Help?</Button>
+              </a>
             </Link>
           </li>
         </NavbarTwoColumns>

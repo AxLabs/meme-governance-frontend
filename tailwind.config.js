@@ -40,7 +40,7 @@ module.exports = {
         },
       },
       lineHeight: {
-        hero: '4.5rem',
+        hero: '3.5rem',
       },
     },
   },

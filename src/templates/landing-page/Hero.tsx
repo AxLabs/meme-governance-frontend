@@ -10,8 +10,12 @@ import { NavbarTwoColumns } from '../../navigation/NavbarTwoColumns';
 import { Logo } from '../commons/Logo';
 
 const Hero = () => (
-  <Background color="bg-gray-100">
-    <Section yPadding="py-6">
+  <Background color="bg-primary-100">
+    <Section 
+      yPadding="py-6" 
+      background="bg-primary-700"
+      maxWidth="max-w-screen-lg"
+    >
       <NavbarTwoColumns logo={<Logo xl />}>
         <li>
           <Link href="https://github.com/AxLabs/meme-governance-frontend">
@@ -20,30 +24,37 @@ const Hero = () => (
         </li>
         <li>
           <Link href="/dapp">
-            <a>dApp</a>
+            <a>DApp</a>
           </Link>
         </li>
       </NavbarTwoColumns>
     </Section>
-
-    <Section yPadding="pt-20 pb-32">
-      <HeroOneButton
-        title={
-          <>
-            {'The Best Memes, ever.\n'}
-            Built and Governed on <span className="text-primary-500">Neo N3</span>
-          </>
-        }
-        description="Propose new ones, vote on the best, and dump the shittiest..."
-        button={
-          <Link href="/dapp">
-            <a>
-              <Button xl>Let&lsquo;s do it!</Button>
-            </a>
-          </Link>
-        }
-      />
-    </Section>
+    <div class="container mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 px-3 pt-14 pb-28">
+        <HeroOneButton
+          title={
+            <>
+              {'The Best Memes, ever.\n'}
+              Built and Governed on <span className="text-primary-500">Neo N3</span>
+            </>
+          }
+          description="Propose new ones, vote on the best, and dump the shittiest..."
+          button={
+            <Link href="/dapp">
+              <a>
+                <Button xl>Let&lsquo;s do it!</Button>
+              </a>
+            </Link>
+          }
+        />
+        <div class="flex justify-center align-center">
+          <img 
+            className="w-3/5 m-auto"
+            src={`${process.env.baseUrl}/assets/images/inter1.png`} 
+          />
+        </div>
+      </div>
+    </div>
   </Background>
 );
 
